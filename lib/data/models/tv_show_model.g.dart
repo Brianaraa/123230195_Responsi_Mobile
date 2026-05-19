@@ -1,4 +1,3 @@
-// lib/data/models/tv_show_model.g.dart
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'tv_show_model.dart';
@@ -21,13 +20,13 @@ class TvShowAdapter extends TypeAdapter<TvShow> {
       id: fields[0] as int,
       name: fields[1] as String,
       imageUrl: fields[2] as String?,
-      rating: fields[3] as double?,
+      tanggalrilis: fields[3] as String?,
       genres: (fields[4] as List).cast<String>(),
       summary: fields[5] as String?,
       status: fields[6] as String?,
-      language: fields[7] as String?,
-      premiered: fields[8] as String?,
-      officialSite: fields[9] as String?,
+      publisher: fields[7] as String?,
+      devaloper: fields[8] as String?,
+      screenshots: (fields[9] as List?)?.cast<String>(),
       mediumImageUrl: fields[10] as String?,
     );
   }
@@ -43,7 +42,7 @@ class TvShowAdapter extends TypeAdapter<TvShow> {
       ..writeByte(2)
       ..write(obj.imageUrl)
       ..writeByte(3)
-      ..write(obj.rating)
+      ..write(obj.tanggalrilis)
       ..writeByte(4)
       ..write(obj.genres)
       ..writeByte(5)
@@ -51,11 +50,11 @@ class TvShowAdapter extends TypeAdapter<TvShow> {
       ..writeByte(6)
       ..write(obj.status)
       ..writeByte(7)
-      ..write(obj.language)
+      ..write(obj.publisher)
       ..writeByte(8)
-      ..write(obj.premiered)
+      ..write(obj.devaloper)
       ..writeByte(9)
-      ..write(obj.officialSite)
+      ..write(obj.screenshots)
       ..writeByte(10)
       ..write(obj.mediumImageUrl);
   }

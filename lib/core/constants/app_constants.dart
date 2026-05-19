@@ -2,9 +2,9 @@
 
 class AppConstants {
   // API
-  static const String baseUrl = 'https://api.tvmaze.com';
-  static const String showsEndpoint = '/shows';
-  static const String showDetailEndpoint = '/shows/';
+  static const String baseUrl = 'https://www.freetogame.com/api';
+  static const String showsEndpoint = '/games';
+  static const String showDetailEndpoint = '/game?id=';
 
   // SharedPreferences Keys
   static const String keyIsLoggedIn = 'is_logged_in';
@@ -21,5 +21,5 @@ class AppConstants {
   static const String routeProfile = '/profile';
 
   // App Info
-  static const String appName = 'StreamVault';
+  static const String appName = 'NaraGame';
 }

@@ -89,20 +89,16 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
 
-                // Grid
+                // List
                 SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  sliver: Obx(() => SliverGrid(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  sliver: Obx(() => SliverList(
                         delegate: SliverChildBuilderDelegate(
-                          (ctx, i) => _ShowCard(show: showList[i]),
+                          (ctx, i) => Padding(
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: _ShowCard(show: showList[i]),
+                          ),
                           childCount: showList.length,
-                        ),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          childAspectRatio: 0.62,
-                          crossAxisSpacing: 8,
-                          mainAxisSpacing: 8,
                         ),
                       )),
                 ),
@@ -152,7 +148,7 @@ class _HomePageState extends State<HomePage> {
             child: Row(
               children: [
                 Text(
-                  'NARA STREAM',
+                  'NARA GAME',
                   style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                         color: AppColors.primary,
                         fontSize: 22,
@@ -187,7 +183,7 @@ class _HomePageState extends State<HomePage> {
                       autofocus: true,
                       style: const TextStyle(color: AppColors.textPrimary),
                       decoration: InputDecoration(
-                        hintText: 'Cari show...',
+                        hintText: 'Cari game...',
                         prefixIcon: const Icon(Icons.search,
                             color: AppColors.textMuted, size: 20),
                         suffixIcon: IconButton(
@@ -216,19 +212,17 @@ class _HomePageState extends State<HomePage> {
       baseColor: AppColors.shimmerBase,
       highlightColor: AppColors.shimmerHighlight,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(12, 100, 12, 0),
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            childAspectRatio: 0.62,
-            crossAxisSpacing: 8,
-            mainAxisSpacing: 8,
-          ),
-          itemCount: 12,
-          itemBuilder: (_, __) => Container(
-            decoration: BoxDecoration(
-              color: AppColors.surface,
-              borderRadius: BorderRadius.circular(4),
+        padding: const EdgeInsets.fromLTRB(16, 100, 16, 0),
+        child: ListView.builder(
+          itemCount: 8,
+          itemBuilder: (_, __) => Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: Container(
+              height: 100,
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
           ),
         ),
@@ -284,7 +278,7 @@ class _FeaturedShowHero extends StatelessWidget {
               fit: BoxFit.cover,
               errorWidget: (_, __, ___) => Container(
                 color: AppColors.surface,
-                child: const Icon(Icons.tv, color: AppColors.textMuted, size: 60),
+                child: const Icon(Icons.videogame_asset, color: AppColors.textMuted, size: 60),
               ),
             ),
           ),
@@ -321,7 +315,7 @@ class _FeaturedShowHero extends StatelessWidget {
                     borderRadius: BorderRadius.circular(2),
                   ),
                   child: Text(
-                    'EM DESTAQUE',
+                    'FEATURED GAME',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: AppColors.textPrimary,
                           fontWeight: FontWeight.w700,
@@ -348,7 +342,7 @@ class _FeaturedShowHero extends StatelessWidget {
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                    const Icon(Icons.star, color: AppColors.gold, size: 16),
+                    const Icon(Icons.date_range, color: AppColors.gold, size: 16),
                     const SizedBox(width: 4),
                     Text(
                       show.displayRating,
@@ -374,7 +368,7 @@ class _FeaturedShowHero extends StatelessWidget {
                         arguments: {'id': show.id},
                       ),
                       icon: const Icon(Icons.play_arrow, size: 20),
-                      label: const Text('TONTON'),
+                      label: const Text('GET GAME'),
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size(130, 40),
                         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -420,69 +414,78 @@ class _ShowCard extends StatelessWidget {
         AppConstants.routeDetail,
         arguments: {'id': show.id},
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(4),
-        child: Stack(
-          fit: StackFit.expand,
+      child: Container(
+        height: 100,
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Row(
           children: [
             // Poster image
-            CachedNetworkImage(
-              imageUrl: show.mediumImageUrl ?? show.displayImageUrl,
-              fit: BoxFit.cover,
-              placeholder: (_, __) => Shimmer.fromColors(
-                baseColor: AppColors.shimmerBase,
-                highlightColor: AppColors.shimmerHighlight,
-                child: Container(color: AppColors.surface),
+            ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(8),
+                bottomLeft: Radius.circular(8),
               ),
-              errorWidget: (_, __, ___) => Container(
-                color: AppColors.surface,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.tv, color: AppColors.textMuted, size: 28),
-                    const SizedBox(height: 4),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: Text(
-                        show.name,
-                        style: Theme.of(context).textTheme.bodySmall,
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
+              child: SizedBox(
+                width: 130,
+                height: 100,
+                child: CachedNetworkImage(
+                  imageUrl: show.mediumImageUrl ?? show.displayImageUrl,
+                  fit: BoxFit.cover,
+                  placeholder: (_, __) => Shimmer.fromColors(
+                    baseColor: AppColors.shimmerBase,
+                    highlightColor: AppColors.shimmerHighlight,
+                    child: Container(color: AppColors.surface),
+                  ),
+                  errorWidget: (_, __, ___) => Container(
+                    color: AppColors.surface,
+                    child: const Icon(Icons.videogame_asset, color: AppColors.textMuted, size: 28),
+                  ),
                 ),
               ),
             ),
-            // Bottom gradient
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Container(
-                padding: const EdgeInsets.fromLTRB(6, 20, 6, 6),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
-                    colors: [
-                      Colors.black.withOpacity(0.9),
-                      Colors.transparent,
-                    ],
-                  ),
-                ),
-                child: Row(
+            const SizedBox(width: 12),
+            // Details
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.star, color: AppColors.gold, size: 10),
-                    const SizedBox(width: 3),
                     Text(
-                      show.displayRating,
-                      style: const TextStyle(
-                        color: AppColors.gold,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w700,
-                      ),
+                      show.name,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      show.genres.isNotEmpty ? show.genres.first : 'Unknown Genre',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: AppColors.primary,
+                          ),
+                    ),
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        const Icon(Icons.desktop_windows, size: 12, color: AppColors.textSecondary),
+                        const SizedBox(width: 4),
+                        Expanded(
+                          child: Text(
+                            show.status ?? 'Unknown Platform',
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                  color: AppColors.textSecondary,
+                                ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

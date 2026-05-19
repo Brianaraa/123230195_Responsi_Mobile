@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/tv_show_model.dart';
 import '../../core/constants/app_constants.dart';
+import '../../presentation/pages/detail/detail_page.dart';
 
 class TvMazeService {
   static final TvMazeService _instance = TvMazeService._internal();
@@ -15,7 +16,7 @@ class TvMazeService {
   Future<List<TvShow>> fetchShows({int page = 0}) async {
     try {
       final uri = Uri.parse(
-        '${AppConstants.baseUrl}${AppConstants.showsEndpoint}',
+        '${AppConstants.detailPage}${AppConstants.showsEndpoint}?page=$page',
       );
       final response = await _client.get(uri).timeout(
         const Duration(seconds: 15),
@@ -23,18 +24,7 @@ class TvMazeService {
 
       if (response.statusCode == 200) {
         final List<dynamic> jsonList = json.decode(response.body);
-        // FreeToGame doesn't have pagination out of the box for this endpoint,
-        // so we'll simulate pagination or just return all if page==0.
-        // Returning all is fine, but to fit the UI loading, we can slice it.
-        final parsed = jsonList.map((json) => TvShow.fromJson(json)).toList();
-        
-        int pageSize = 30;
-        int start = page * pageSize;
-        if (start >= parsed.length) return [];
-        int end = start + pageSize;
-        if (end > parsed.length) end = parsed.length;
-        
-        return parsed.sublist(start, end);
+        return jsonList.map((json) => TvShow.fromJson(json)).toList();
       } else {
         throw Exception('Failed to load shows: ${response.statusCode}');
       }
@@ -46,7 +36,7 @@ class TvMazeService {
   Future<TvShow> fetchShowDetail(int id) async {
     try {
       final uri = Uri.parse(
-        '${AppConstants.baseUrl}${AppConstants.showDetailEndpoint}$id',
+        '${AppConstants.detailPage}${AppConstants.showDetailEndpoint}$id',
       );
       final response = await _client.get(uri).timeout(
         const Duration(seconds: 15),
@@ -63,11 +53,9 @@ class TvMazeService {
   }
 
   Future<List<TvShow>> searchShows(String query) async {
-    // FreeToGame doesn't have a search endpoint.
-    // We will simulate it by fetching all and filtering locally.
     try {
       final uri = Uri.parse(
-        '${AppConstants.baseUrl}${AppConstants.showsEndpoint}',
+        '${AppConstants.detailPage}/search/shows?q=${Uri.encodeComponent(query)}',
       );
       final response = await _client.get(uri).timeout(
         const Duration(seconds: 15),
@@ -75,10 +63,8 @@ class TvMazeService {
 
       if (response.statusCode == 200) {
         final List<dynamic> jsonList = json.decode(response.body);
-        final all = jsonList.map((item) => TvShow.fromJson(item)).toList();
-        return all
-            .where((game) =>
-                game.name.toLowerCase().contains(query.toLowerCase()))
+        return jsonList
+            .map((item) => TvShow.fromJson(item['show']))
             .toList();
       } else {
         throw Exception('Search failed: ${response.statusCode}');

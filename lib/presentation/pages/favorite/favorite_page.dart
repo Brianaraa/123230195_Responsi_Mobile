@@ -26,7 +26,7 @@ class FavoritePage extends StatelessWidget {
               padding:
                   const EdgeInsets.fromLTRB(16, 16, 16, 0),
               child: Text(
-                'FAVORIT',
+                'LIBRARY',
                 style: Theme.of(context)
                     .textTheme
                     .headlineLarge
@@ -39,7 +39,7 @@ class FavoritePage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Obx(() => Text(
-                    '${controller.favorites.length} show tersimpan',
+                    '${controller.favorites.length} game tersimpan',
                     style: Theme.of(context).textTheme.bodySmall,
                   )),
             ),
@@ -93,12 +93,12 @@ class FavoritePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Hapus dari Favorit?',
+              'Hapus dari Library?',
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 8),
             Text(
-              '"${show.name}" akan dihapus dari daftar favorit kamu.',
+              '"${show.name}" akan dihapus dari daftar library kamu.',
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             const SizedBox(height: 24),
@@ -141,11 +141,11 @@ class FavoritePage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.favorite_border,
+          const Icon(Icons.videogame_asset_off,
               color: AppColors.textMuted, size: 72),
           const SizedBox(height: 16),
           Text(
-            'Belum ada favorit',
+            'Belum ada game',
             style: Theme.of(context)
                 .textTheme
                 .titleMedium
@@ -153,7 +153,7 @@ class FavoritePage extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'Tambahkan show ke favorit dari halaman detail.',
+            'Tambahkan game ke library dari halaman detail.',
             style: Theme.of(context).textTheme.bodySmall,
             textAlign: TextAlign.center,
           ),
@@ -192,14 +192,14 @@ class _FavoriteCard extends StatelessWidget {
               ),
               child: CachedNetworkImage(
                 imageUrl: show.mediumImageUrl ?? show.displayImageUrl,
-                width: 80,
+                width: 120,
                 height: 110,
                 fit: BoxFit.cover,
                 errorWidget: (_, __, ___) => Container(
-                  width: 80,
+                  width: 120,
                   height: 110,
                   color: AppColors.surface,
-                  child: const Icon(Icons.tv,
+                  child: const Icon(Icons.videogame_asset,
                       color: AppColors.textMuted, size: 28),
                 ),
               ),
@@ -219,40 +219,31 @@ class _FavoriteCard extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 6),
-                    Row(
-                      children: [
-                        const Icon(Icons.star,
-                            color: AppColors.gold, size: 13),
-                        const SizedBox(width: 4),
-                        Text(
-                          show.displayRating,
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: AppColors.gold,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 8),
                     if (show.genres.isNotEmpty)
                       Text(
                         show.genres.take(2).join(' • '),
-                        style: Theme.of(context).textTheme.bodySmall,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.primary),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                     if (show.status != null) ...[
                       const SizedBox(height: 4),
-                      Text(
-                        show.status!,
-                        style:
-                            Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: show.status == 'Running'
-                                      ? Colors.green
-                                      : AppColors.textMuted,
-                                ),
+                      Row(
+                        children: [
+                          const Icon(Icons.desktop_windows, size: 12, color: AppColors.textSecondary),
+                          const SizedBox(width: 4),
+                          Expanded(
+                            child: Text(
+                              show.status!,
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: AppColors.textSecondary,
+                                  ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ],

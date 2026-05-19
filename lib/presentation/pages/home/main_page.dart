@@ -48,9 +48,9 @@ class MainPage extends StatelessWidget {
                   label: 'Home',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.favorite_outline),
-                  activeIcon: Icon(Icons.favorite),
-                  label: 'Favorit',
+                  icon: Icon(Icons.library_books_outlined),
+                  activeIcon: Icon(Icons.library_books),
+                  label: 'Library',
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.person_outline),

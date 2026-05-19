@@ -31,7 +31,15 @@ void main() async {
   // Initialize Hive
   await Hive.initFlutter();
   Hive.registerAdapter(TvShowAdapter());
-  await Hive.openBox<TvShow>(AppConstants.favoriteBox);
+  
+  try {
+    await Hive.openBox<TvShow>(AppConstants.favoriteBox);
+  } catch (e) {
+    // If there is a schema mismatch (from old TVMaze structure to new FreeToGame structure),
+    // delete the old box from disk and open a fresh one.
+    await Hive.deleteBoxFromDisk(AppConstants.favoriteBox);
+    await Hive.openBox<TvShow>(AppConstants.favoriteBox);
+  }
 
   // Check login status
   final authService = AuthService();

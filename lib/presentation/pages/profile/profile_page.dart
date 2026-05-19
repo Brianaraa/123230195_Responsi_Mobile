@@ -52,14 +52,14 @@ class ProfilePage extends StatelessWidget {
 
               // Username
               Obx(() => Text(
-                    authController.username.value,
+                    authController.username.value, // This actually holds the email based on AuthService
                     style: Theme.of(context).textTheme.headlineMedium,
                   )),
 
               const SizedBox(height: 4),
 
               Text(
-                'Member NaraStream',
+                'Member NaraGame',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
 
@@ -79,14 +79,14 @@ class ProfilePage extends StatelessWidget {
                     Obx(() => _StatItem(
                           value:
                               '${favoriteController.favorites.length}',
-                          label: 'Favorit',
-                          icon: Icons.favorite,
+                          label: 'Library Games',
+                          icon: Icons.videogame_asset,
                           color: AppColors.primary,
                         )),
                     _dividerV(),
                     const _StatItem(
                       value: '∞',
-                      label: 'Ditonton',
+                      label: 'Dimainkan',
                       icon: Icons.play_circle_outline,
                       color: AppColors.gold,
                     ),
@@ -192,7 +192,7 @@ class ProfilePage extends StatelessWidget {
           style: Theme.of(context).textTheme.titleLarge,
         ),
         content: Text(
-          'Kamu akan keluar dari NaraStream.',
+          'Kamu akan keluar dari NaraGame.',
           style: Theme.of(context).textTheme.bodyMedium,
         ),
         actions: [

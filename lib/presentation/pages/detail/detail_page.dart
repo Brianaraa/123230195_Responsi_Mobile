@@ -126,33 +126,30 @@ class DetailPage extends StatelessWidget {
                       spacing: 16,
                       runSpacing: 8,
                       children: [
-                        // Rating
+                        // Release Date
                         _MetaBadge(
-                          icon: Icons.star,
+                          icon: Icons.date_range,
                           iconColor: AppColors.gold,
                           text: show.displayRating,
                           textColor: AppColors.gold,
                         ),
-                        // Status
+                        // Platform
                         if (show.status != null)
                           _MetaBadge(
-                            icon: Icons.circle,
-                            iconColor: show.status == 'Running'
-                                ? Colors.green
-                                : AppColors.textMuted,
+                            icon: Icons.desktop_windows,
                             text: show.status!,
                           ),
-                        // Language
-                        if (show.language != null)
+                        // Publisher
+                        if (show.publisher != null)
                           _MetaBadge(
-                            icon: Icons.language,
-                            text: show.language!,
+                            icon: Icons.business,
+                            text: show.publisher!,
                           ),
-                        // Year
-                        if (show.premieredYear.isNotEmpty)
+                        // Developer
+                        if (show.devaloper != null)
                           _MetaBadge(
-                            icon: Icons.calendar_today,
-                            text: show.premieredYear,
+                            icon: Icons.code,
+                            text: show.devaloper!,
                           ),
                       ],
                     ),
@@ -160,52 +157,36 @@ class DetailPage extends StatelessWidget {
                     const SizedBox(height: 20),
 
                     // Action buttons
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton.icon(
-                            onPressed: () {},
-                            icon: const Icon(Icons.play_arrow, size: 22),
-                            label: const Text('TONTON'),
-                            style: ElevatedButton.styleFrom(
-                              minimumSize: const Size(0, 48),
+                    SizedBox(
+                      width: double.infinity,
+                      child: Obx(() => ElevatedButton.icon(
+                            onPressed: controller.toggleFavorite,
+                            icon: Icon(
+                              controller.isFavorite.value
+                                  ? Icons.delete_outline
+                                  : Icons.add_circle_outline,
+                              size: 22,
+                              color: controller.isFavorite.value ? Colors.redAccent : Colors.white,
                             ),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Obx(() => Expanded(
-                              child: OutlinedButton.icon(
-                                onPressed: controller.toggleFavorite,
-                                icon: Icon(
-                                  controller.isFavorite.value
-                                      ? Icons.favorite
-                                      : Icons.favorite_border,
-                                  color: controller.isFavorite.value
-                                      ? AppColors.primary
-                                      : AppColors.textPrimary,
-                                  size: 20,
-                                ),
-                                label: Text(
-                                  controller.isFavorite.value
-                                      ? 'FAVORIT'
-                                      : '+ FAVORIT',
-                                  style: TextStyle(
-                                    color: controller.isFavorite.value
-                                        ? AppColors.primary
-                                        : AppColors.textPrimary,
-                                  ),
-                                ),
-                                style: OutlinedButton.styleFrom(
-                                  minimumSize: const Size(0, 48),
-                                  side: BorderSide(
-                                    color: controller.isFavorite.value
-                                        ? AppColors.primary
-                                        : AppColors.textSecondary,
-                                  ),
-                                ),
+                            label: Text(
+                              controller.isFavorite.value
+                                  ? 'HAPUS DARI LIBRARY'
+                                  : 'DAPATKAN GAME (GRATIS)',
+                              style: TextStyle(
+                                color: controller.isFavorite.value ? Colors.redAccent : Colors.white,
+                                fontWeight: FontWeight.bold,
                               ),
-                            )),
-                      ],
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: controller.isFavorite.value 
+                                  ? AppColors.surface 
+                                  : AppColors.primary,
+                              minimumSize: const Size(0, 48),
+                              side: controller.isFavorite.value
+                                  ? const BorderSide(color: Colors.redAccent)
+                                  : null,
+                            ),
+                          )),
                     ),
 
                     const SizedBox(height: 28),
@@ -232,6 +213,51 @@ class DetailPage extends StatelessWidget {
                       const SizedBox(height: 24),
                     ],
 
+                    // Screenshots
+                    if (show.screenshots != null && show.screenshots!.isNotEmpty) ...[
+                      Text(
+                        'SCREENSHOTS',
+                        style:
+                            Theme.of(context).textTheme.bodySmall?.copyWith(
+                                  letterSpacing: 2,
+                                  color: AppColors.textMuted,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                      ),
+                      const SizedBox(height: 12),
+                      SizedBox(
+                        height: 180,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: show.screenshots!.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: const EdgeInsets.only(right: 12),
+                              width: 320,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              clipBehavior: Clip.hardEdge,
+                              child: CachedNetworkImage(
+                                imageUrl: show.screenshots![index],
+                                fit: BoxFit.cover,
+                                placeholder: (_, __) => Shimmer.fromColors(
+                                  baseColor: AppColors.shimmerBase,
+                                  highlightColor: AppColors.shimmerHighlight,
+                                  child: Container(color: AppColors.surface),
+                                ),
+                                errorWidget: (_, __, ___) => Container(
+                                  color: AppColors.surface,
+                                  child: const Icon(Icons.image_not_supported, color: AppColors.textMuted),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                    ],
+
                     // Divider
                     const Divider(color: AppColors.divider),
                     const SizedBox(height: 16),
@@ -239,7 +265,7 @@ class DetailPage extends StatelessWidget {
                     // Summary
                     if (show.summary != null && show.summary!.isNotEmpty) ...[
                       Text(
-                        'SINOPSIS',
+                        'DESKRIPSI',
                         style:
                             Theme.of(context).textTheme.bodySmall?.copyWith(
                                   letterSpacing: 2,

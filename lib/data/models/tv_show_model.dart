@@ -16,7 +16,7 @@ class TvShow extends HiveObject {
   final String? imageUrl;
 
   @HiveField(3)
-  final double? rating;
+  final String? tanggalrilis;
 
   @HiveField(4)
   final List<String> genres;
@@ -28,13 +28,13 @@ class TvShow extends HiveObject {
   final String? status;
 
   @HiveField(7)
-  final String? language;
+  final String? publisher;
 
   @HiveField(8)
-  final String? premiered;
+  final String? devaloper;
 
   @HiveField(9)
-  final String? officialSite;
+  final List<String>? screenshots;
 
   @HiveField(10)
   final String? mediumImageUrl;
@@ -43,56 +43,58 @@ class TvShow extends HiveObject {
     required this.id,
     required this.name,
     this.imageUrl,
-    this.rating,
+    this.tanggalrilis,
     required this.genres,
     this.summary,
     this.status,
-    this.language,
-    this.premiered,
-    this.officialSite,
+    this.publisher,
+    this.devaloper,
+    this.screenshots,
     this.mediumImageUrl,
   });
 
   factory TvShow.fromJson(Map<String, dynamic> json) {
-    final image = json['image'];
-    final ratingMap = json['rating'];
+    final genreStr = json['genre'];
+    final genresList = genreStr != null ? [genreStr.toString()] : <String>[];
+    
+    List<String>? screenshotsList;
+    if (json['screenshots'] != null) {
+      screenshotsList = (json['screenshots'] as List)
+          .map((e) => e['image'].toString())
+          .toList();
+    }
 
     return TvShow(
       id: json['id'] ?? 0,
-      name: json['name'] ?? 'Unknown',
-      imageUrl: image?['original'],
-      mediumImageUrl: image?['medium'],
-      rating: ratingMap?['average'] != null
-          ? (ratingMap['average'] as num).toDouble()
-          : null,
-      genres: (json['genres'] as List<dynamic>?)
-              ?.map((e) => e.toString())
-              .toList() ??
-          [],
-      summary: json['summary'],
-      status: json['status'],
-      language: json['language'],
-      premiered: json['premiered'],
-      officialSite: json['officialSite'],
+      name: json['title'] ?? 'Unknown',
+      imageUrl: json['thumbnail'],
+      mediumImageUrl: json['thumbnail'],
+      tanggalrilis: json['release_date'],
+      genres: genresList,
+      summary: json['description'] ?? json['short_description'],
+      status: json['platform'],
+      publisher: json['publisher'],
+      devaloper: json['developer'],
+      screenshots: screenshotsList,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'name': name,
-      'image': {'original': imageUrl, 'medium': mediumImageUrl},
-      'rating': {'average': rating},
-      'genres': genres,
-      'summary': summary,
-      'status': status,
-      'language': language,
-      'premiered': premiered,
-      'officialSite': officialSite,
+      'title': name,
+      'thumbnail': imageUrl,
+      'release_date': tanggalrilis,
+      'genre': genres.isNotEmpty ? genres.first : null,
+      'description': summary,
+      'platform': status,
+      'publisher': publisher,
+      'developer': devaloper,
+      'screenshots': screenshots?.map((e) => {'image': e}).toList(),
     };
   }
 
   String get displayImageUrl => imageUrl ?? mediumImageUrl ?? '';
-  String get displayRating => rating != null ? rating!.toStringAsFixed(1) : 'N/A';
-  String get premieredYear => premiered?.substring(0, 4) ?? '';
+  String get displayRating => tanggalrilis ?? 'N/A'; // Show release date directly
+  String get premieredYear => devaloper ?? '';
 }

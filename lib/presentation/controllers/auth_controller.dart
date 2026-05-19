@@ -31,7 +31,7 @@ class AuthController extends GetxController {
         username.value = user.trim();
         Get.offAllNamed(AppConstants.routeHome);
       } else {
-        errorMessage.value = 'Username minimal 3 karakter, password minimal 4 karakter.';
+        errorMessage.value = 'Password Minimal 4 Karakter.';
       }
     } catch (e) {
       errorMessage.value = 'Terjadi kesalahan. Coba lagi.';

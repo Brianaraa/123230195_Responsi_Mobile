@@ -90,7 +90,7 @@ class _LoginPageState extends State<LoginPage>
                 borderRadius: BorderRadius.circular(500),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.primary.withOpacity(0.15),
+                    color: const Color.fromARGB(255, 40, 49, 222).withOpacity(0.15),
                     blurRadius: 150,
                     spreadRadius: 50,
                   ),
@@ -124,13 +124,13 @@ class _LoginPageState extends State<LoginPage>
                                     .textTheme
                                     .displayLarge
                                     ?.copyWith(
-                                      color: AppColors.primary,
+                                      color: const Color.fromARGB(255, 31, 143, 218),
                                       fontSize: 52,
                                       letterSpacing: 8,
                                     ),
                               ),
                               Text(
-                                'STREAM',
+                                'GAMES',
                                 style: Theme.of(context)
                                     .textTheme
                                     .displayLarge
@@ -166,8 +166,8 @@ class _LoginPageState extends State<LoginPage>
                           controller: _usernameCtrl,
                           style: const TextStyle(color: AppColors.textPrimary),
                           decoration: const InputDecoration(
-                            labelText: 'Username',
-                            hintText: 'Masukkan username',
+                            labelText: 'Email',
+                            hintText: 'Masukan Email Anda ',
                             prefixIcon: Icon(
                               Icons.person_outline,
                               color: AppColors.textMuted,
@@ -175,10 +175,10 @@ class _LoginPageState extends State<LoginPage>
                           ),
                           validator: (val) {
                             if (val == null || val.trim().isEmpty) {
-                              return 'Username tidak boleh kosong';
+                              return 'Email Tidak Boleh Kosong';
                             }
                             if (val.trim().length < 3) {
-                              return 'Username minimal 3 karakter';
+                              return 'Email minimal @gmail.com';
                             }
                             return null;
                           },
@@ -292,7 +292,7 @@ class _LoginPageState extends State<LoginPage>
                         // Hint
                         Center(
                           child: Text(
-                            'Gunakan username & password bebas\n(min. 3 & 4 karakter)',
+                            'Gunakan email & password bebas\n(min. 3 & 4 karakter)',
                             textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.bodySmall,
                           ),

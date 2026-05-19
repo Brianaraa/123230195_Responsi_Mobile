@@ -9,7 +9,6 @@ class AuthService {
   AuthService._internal();
 
   Future<bool> login(String username, String password) async {
-    // Validasi sederhana - bebas username & password
     if (username.trim().isEmpty || password.trim().isEmpty) {
       return false;
     }

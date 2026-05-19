@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../data/models/tv_show_model.dart';
 import '../../data/services/tvmaze_service.dart';
 import '../../data/services/favorite_service.dart';
+import '../../core/constants/app_constants.dart';
 
 class DetailController extends GetxController {
   final TvMazeService _apiService = TvMazeService();
